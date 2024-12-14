@@ -1,0 +1,56 @@
+.theory {
+    margin-top: 5%;
+    display: flex;
+
+    .chapter {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .words,
+    .definition {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        list-style-type: none;
+    }
+
+    .grammar {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .definition {
+        align-items: center;
+
+    }
+
+    .task {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        gap: 20px;
+
+        input,
+        .submit {
+            height: 50px;
+            padding: 0 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    }
+
+    img {
+        width: 500px;
+        height: auto;
+        position: absolute;
+        bottom: -70px;
+        right: 0;
+    }
+}
