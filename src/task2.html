@@ -99,6 +99,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="task1.html">Task 1</a></li>
                             <li><a class="dropdown-item" href="task2.html">Task 2</a></li>
+                            <li><a class="dropdown-item" href="task3.html">Task 3</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -179,7 +180,7 @@
 
     <script>
         // Datele quiz-ului de geografie
-        const geographyQuiz = {
+        const psQuiz = {
             testId: "Present Simple Quiz",
             questions: [
                 {
@@ -231,11 +232,11 @@
 
         // Funcția pentru încărcarea întrebării curente
         function loadQuestion() {
-            const question = geographyQuiz.questions[currentQuestionIndex];
+            const question = psQuiz.questions[currentQuestionIndex];
             questionText.innerHTML = question.question;
             answerInput.value = '';
             feedback.innerHTML = '';
-            scoreDisplay.innerHTML = `Your score: ${geographyQuiz.score}`;
+            scoreDisplay.innerHTML = `Your score: ${psQuiz.score}`;
         }
 
         // Funcția pentru a salva testul în localStorage
@@ -246,14 +247,14 @@
             }
 
             // Căutăm testul în allTests după testId pentru a-l actualiza
-            const existingTestIndex = allTests.findIndex(test => test.testId === geographyQuiz.testId);
+            const existingTestIndex = allTests.findIndex(test => test.testId === psQuiz.testId);
 
             if (existingTestIndex === -1) {
                 // Dacă testul nu există în allTests, îl adăugăm
-                allTests.push(geographyQuiz);
+                allTests.push(psQuiz);
             } else {
                 // Dacă testul există, îl actualizăm
-                allTests[existingTestIndex] = geographyQuiz;
+                allTests[existingTestIndex] = psQuiz;
             }
 
             // Salvăm lista actualizată de teste în localStorage
@@ -263,14 +264,14 @@
         // Evenimentul pentru trimiterea răspunsului
         submitButton.addEventListener('click', () => {
             const userAnswer = answerInput.value.trim().toLowerCase();
-            const currentQuestion = geographyQuiz.questions[currentQuestionIndex];
+            const currentQuestion = psQuiz.questions[currentQuestionIndex];
 
             currentQuestion.userAnswer = userAnswer; // Salvăm răspunsul utilizatorului
 
             // Verificăm dacă răspunsul este corect
             if (userAnswer === currentQuestion.correctAnswer.toLowerCase()) {
                 currentQuestion.answeredCorrectly = true;
-                geographyQuiz.score++;
+                psQuiz.score++;
                 feedback.innerHTML = '<p style="color: green;">Correct!</p>';
             } else {
                 currentQuestion.answeredCorrectly = false;
@@ -282,17 +283,17 @@
 
             // Mergem la următoarea întrebare sau arătăm rezultatele dacă testul s-a terminat
             currentQuestionIndex++;
-            if (currentQuestionIndex < geographyQuiz.questions.length) {
+            if (currentQuestionIndex < psQuiz.questions.length) {
                 loadQuestion(); // Încărcăm următoarea întrebare
             } else {
                 // Afișăm scorul final
-                feedback.innerHTML = `<p>Your score: ${geographyQuiz.score} out of ${geographyQuiz.questions.length}</p>`;
+                feedback.innerHTML = `<p>Your score: ${psQuiz.score} out of ${psQuiz.questions.length}</p>`;
 
                 // Mesaj de feedback în funcție de scor
                 let resultMessage = '';
-                if (geographyQuiz.score === 5) {
+                if (psQuiz.score === 5) {
                     resultMessage = 'Excellent! You are a geography expert!';
-                } else if (geographyQuiz.score >= 3) {
+                } else if (psQuiz.score >= 3) {
                     resultMessage = 'Great job! Keep it up!';
                 } else {
                     resultMessage = 'Nice try! Try again for a better score!';
@@ -308,11 +309,11 @@
         // Evenimentul pentru a încerca din nou
         tryAgainButton.addEventListener('click', () => {
             // Resetează datele pentru a încerca din nou testul
-            geographyQuiz.questions.forEach(question => {
+            psQuiz.questions.forEach(question => {
                 question.userAnswer = '';
                 question.answeredCorrectly = false;
             });
-            geographyQuiz.score = 0;
+            psQuiz.score = 0;
             currentQuestionIndex = 0;
 
             tryAgainButton.style.display = 'none';
@@ -334,7 +335,7 @@
                     if (!question.answeredCorrectly) {
                         incorrectQuestionsHTML += `
                     <p><strong>Question:</strong> ${question.question}</p>
-                    <p><strong>Your Answer:</strong> ${question.userAnswer}</p>
+                    <p><strong>Your Answer:</strong> ${question.userAnswer || 'No answer provided'}</p>
                     <p><strong>Correct Answer:</strong> ${question.correctAnswer}</p>
                     <hr>
                 `;

@@ -88,7 +88,7 @@ submitButton.addEventListener('click', () => {
     const userAnswer = answerInput.value.trim().toLowerCase();
     const currentQuestion = questionData.questions[currentQuestionIndex];
 
-    currentQuestion.userAnswer = userAnswer; 
+    currentQuestion.userAnswer = userAnswer;
 
     // Verificăm dacă răspunsul este corect
     if (userAnswer === currentQuestion.correctAnswer.toLowerCase()) {
@@ -97,7 +97,7 @@ submitButton.addEventListener('click', () => {
         feedback.innerHTML = '<p style="color: green;">Well done!</p>';
     } else {
         currentQuestion.answeredCorrectly = false;
-        feedback.innerHTML = ''; 
+        feedback.innerHTML = '';
     }
 
     // Salvăm testul în localStorage
@@ -130,7 +130,6 @@ submitButton.addEventListener('click', () => {
 
 // Evenimentul pentru a încerca din nou
 tryAgainButton.addEventListener('click', () => {
-    // Resetează datele pentru a încerca din nou testul
     questionData.questions.forEach(question => {
         question.userAnswer = '';
         question.answeredCorrectly = false;
@@ -148,27 +147,35 @@ tryAgainButton.addEventListener('click', () => {
 });
 
 // Funcția pentru a vizualiza rezultatele
+// Функция для отображения неверных ответов
 seeResultsButton.addEventListener('click', () => {
     let incorrectQuestionsHTML = '';
 
-    // Parcurgem testele din localStorage și afișăm întrebările greșite
-    allTests.forEach(test => {
-        test.questions.forEach((question, index) => {
-            if (!question.answeredCorrectly) {
-                incorrectQuestionsHTML += `
-                    <p><strong>Question:</strong> ${question.question}</p>
-                    <p><strong>Your Answer:</strong> ${question.userAnswer}</p>
+    // Проходим по всем вопросам текущего теста
+    questionData.questions.forEach((question, index) => {
+        if (!question.answeredCorrectly) {
+            incorrectQuestionsHTML += `
+                <div>
+                    <p><strong>Question ${index + 1}:</strong> ${question.question}</p>
+                    <p><strong>Your Answer:</strong> ${question.userAnswer || 'No answer provided'}</p>
                     <p><strong>Correct Answer:</strong> ${question.correctAnswer}</p>
-                    <hr>
-                `;
-            }
-        });
+                </div>
+                <hr>
+            `;
+        }
     });
 
-    // Afișează întrebările cu răspunsuri greșite
+    // Если все ответы правильные
+    if (incorrectQuestionsHTML === '') {
+        incorrectQuestionsHTML = '<p>All your answers are correct! Great job!</p>';
+    }
+
+    // Отображаем неверные ответы или сообщение
     feedback.innerHTML = incorrectQuestionsHTML;
-    seeResultsButton.style.display = 'none'; // Ascunde butonul de "Vezi rezultate"
+
+    // Скрываем кнопку See Results после отображения
+    seeResultsButton.style.display = 'none';
 });
 
-// Încarcă prima întrebare la început
+
 loadQuestion();

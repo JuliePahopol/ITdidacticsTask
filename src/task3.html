@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Choice Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Learn fast</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Tasks
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="task1.html">Task 1</a></li>
+                            <li><a class="dropdown-item" href="task2.html">Task 2</a></li>
+                            <li><a class="dropdown-item" href="task3.html">Task 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="score.html">Score</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center">Multiple Choice Quiz</h1>
+        <div id="quiz-container" class="mt-4">
+            <div id="questionText" class="mb-3">Loading...</div>
+            <div id="options" class="list-group mb-3">
+                <!-- Options will be dynamically inserted here -->
+            </div>
+            <button id="submitAnswer" class="btn btn-primary">Submit</button>
+            <div id="feedback" class="mt-3"></div>
+            <div id="score" class="mt-2"></div>
+            <button id="tryAgain" class="btn btn-secondary mt-3" style="display: none;">Try Again</button>
+            <button id="seeResultsButton" class="btn btn-info mt-3" style="display: none;">See Results</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = {
+            testId: "Multiple Choice Quiz",
+            questions: [
+                {
+                    question: "What is the capital of France?",
+                    options: ["Paris", "London", "Berlin", "Madrid"],
+                    correctAnswer: "Paris",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Earth", "Mars", "Jupiter", "Venus"],
+                    correctAnswer: "Mars",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "What is the largest ocean on Earth?",
+                    options: ["Atlantic", "Pacific", "Indian", "Arctic"],
+                    correctAnswer: "Pacific",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "Who wrote 'Romeo and Juliet'?",
+                    options: ["Shakespeare", "Hemingway", "Tolkien", "Austen"],
+                    correctAnswer: "Shakespeare",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "What is the boiling point of water?",
+                    options: ["90°C", "100°C", "110°C", "120°C"],
+                    correctAnswer: "100°C",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                }
+            ],
+            score: 0
+        };
+
+        let currentQuestionIndex = 0;
+        let allTests = JSON.parse(localStorage.getItem('allTests')) || [];
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('options');
+        const submitButton = document.getElementById('submitAnswer');
+        const feedback = document.getElementById('feedback');
+        const scoreDisplay = document.getElementById('score');
+        const tryAgainButton = document.getElementById('tryAgain');
+        const seeResultsButton = document.getElementById('seeResultsButton');
+
+        function loadQuestion() {
+            const question = quizData.questions[currentQuestionIndex];
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            feedback.textContent = '';
+            scoreDisplay.textContent = `Your score: ${quizData.score}`;
+
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('button');
+                optionElement.textContent = option;
+                optionElement.className = 'list-group-item list-group-item-action';
+                optionElement.onclick = () => selectOption(optionElement, option);
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        function saveTest() {
+            if (!Array.isArray(allTests)) {
+                allTests = [];
+            }
+
+            const existingTestIndex = allTests.findIndex(test => test.testId === quizData.testId);
+
+            if (existingTestIndex === -1) {
+                allTests.push(quizData);
+            } else {
+                allTests[existingTestIndex] = quizData;
+            }
+
+            localStorage.setItem('allTests', JSON.stringify(allTests));
+        }
+
+        function selectOption(element, option) {
+            Array.from(optionsContainer.children).forEach(btn => {
+                btn.classList.remove('active');
+            });
+            element.classList.add('active');
+            quizData.questions[currentQuestionIndex].userAnswer = option;
+        }
+
+        submitButton.addEventListener('click', () => {
+            const currentQuestion = quizData.questions[currentQuestionIndex];
+            if (!currentQuestion.userAnswer) {
+                feedback.textContent = 'Please select an option.';
+                return;
+            }
+
+            if (currentQuestion.userAnswer === currentQuestion.correctAnswer) {
+                currentQuestion.answeredCorrectly = true;
+                quizData.score++;
+                feedback.textContent = 'Correct!';
+                feedback.style.color = 'green';
+            } else {
+                currentQuestion.answeredCorrectly = false;
+                feedback.textContent = 'Wrong answer!';
+                feedback.style.color = 'red';
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.questions.length) {
+                setTimeout(loadQuestion, 1000);
+            } else {
+                feedback.textContent = `You scored ${quizData.score} out of ${quizData.questions.length}`;
+                scoreDisplay.textContent = '';
+                saveTest(); // Save the test results
+                seeResultsButton.style.display = 'block';
+                tryAgainButton.style.display = 'block';
+            }
+        });
+
+        tryAgainButton.addEventListener('click', () => {
+            quizData.questions.forEach(q => {
+                q.userAnswer = '';
+                q.answeredCorrectly = false;
+            });
+            quizData.score = 0;
+            currentQuestionIndex = 0;
+            tryAgainButton.style.display = 'none';
+            seeResultsButton.style.display = 'none';
+            loadQuestion();
+        });
+
+        seeResultsButton.addEventListener('click', () => {
+            let resultHTML = '';
+
+            // Перебираем все вопросы и выводим вопрос, ответ пользователя и правильный ответ
+            quizData.questions.forEach((question, index) => {
+                resultHTML += `
+            <p><strong>Question ${index + 1}: </strong> ${question.question}</p>
+            <p><strong>Your Answer: </strong> ${question.userAnswer || 'No answer provided'}</p>
+            <p><strong>Correct Answer: </strong> ${question.correctAnswer}</p>
+            <hr>
+        `;
+            });
+
+            // Показываем результаты
+            feedback.innerHTML = resultHTML;
+            seeResultsButton.style.display = 'none'; // Скрываем кнопку "See Results"
+        });
+
+        loadQuestion();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
