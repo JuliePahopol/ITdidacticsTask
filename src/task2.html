@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.min.css">
+    <!-- <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question-container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        #score {
+            font-size: 1.5em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #tryAgain,
+        #seeResultsButton {
+            display: none;
+        }
+    </style> -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Learn fast</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Tasks
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="task1.html">Task 1</a></li>
+                            <li><a class="dropdown-item" href="task2.html">Task 2</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="score.html">Score</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="theory">
+        <div class="container">
+            <div class="wrapper">
+                <div class="chapter">
+                    <div class="title">
+                        Present Simple
+                    </div>
+                    <div class="subtitle">
+                        What is the simple present tense?
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    The simple present tense is used to describe actions happening now or regularly. In the simple
+                    present, most regular verbs use the root form, except in the third-person singular (which ends in s
+                    or es).
+
+
+                </div>
+
+                <div class="grammar">
+                    <div class="title">Example</div>
+                    <ul class="definition">
+                        <li>I <b>feel</b> great!</li>
+                        <li>Pauline <b>loves</b> pie.</li>
+                        <li><b>I’m </b>sorry to hear that you’re sick.</li>
+                    </ul>
+                    <div class="subtitle">
+                        The simple present tense is also used to describe habitual actions or occurrences.
+                    </div>
+                    <ul class="definition">
+                        <li>Pauline <b>practices</b> the piano every day.</li>
+                        <li>Ms. Jackson <b>travels</b> during the summer.</li>
+                        <li>Hamsters <b>run</b> all night.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="title">
+        Present Simple Quiz
+    </div>
+
+
+    <div class="question-container">
+        <div id="questionText">Loading...</div>
+        <input type="text" id="answerInput" placeholder="Your answer...">
+        <button id="submitAnswer" class="submit">Submit</button>
+        <div id="feedback" class="feedback"></div>
+        <div id="score"></div>
+    </div>
+
+    <div class="feedback">
+        <div class="feedback-container">
+            <button id="tryAgain">Try Again</button>
+            <button id="seeResultsButton">See Results</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Datele quiz-ului de geografie
+        const geographyQuiz = {
+            testId: "Present Simple Quiz",
+            questions: [
+                {
+                    question: "I want to (go/going/went) shopping",
+                    correctAnswer: "go",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "Does he want to (play/played/playing) football?",
+                    correctAnswer: "play",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "(Do/Does/Did) he usually go to sleep at 9pm?",
+                    correctAnswer: "Does",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "I (travels/traveled/travel) to UK every summer.",
+                    correctAnswer: "travel",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                },
+                {
+                    question: "My teacher told me to (practise/prectised/practising) English everyday",
+                    correctAnswer: "practise",
+                    userAnswer: "",
+                    answeredCorrectly: false
+                }
+            ],
+            score: 0
+        };
+
+        // Variabile pentru indexul curent al întrebării și datele din localStorage
+        let currentQuestionIndex = 0;
+        let allTests = JSON.parse(localStorage.getItem('allTests')) || [];
+
+        // Elementele din HTML
+        const questionText = document.getElementById('questionText');
+        const submitButton = document.getElementById('submitAnswer');
+        const answerInput = document.getElementById('answerInput');
+        const feedback = document.getElementById('feedback');
+        const scoreDisplay = document.getElementById('score');
+        const tryAgainButton = document.getElementById('tryAgain');
+        const seeResultsButton = document.getElementById('seeResultsButton');
+
+        // Funcția pentru încărcarea întrebării curente
+        function loadQuestion() {
+            const question = geographyQuiz.questions[currentQuestionIndex];
+            questionText.innerHTML = question.question;
+            answerInput.value = '';
+            feedback.innerHTML = '';
+            scoreDisplay.innerHTML = `Your score: ${geographyQuiz.score}`;
+        }
+
+        // Funcția pentru a salva testul în localStorage
+        function saveTest() {
+            // Verificăm dacă allTests este un array valid
+            if (!Array.isArray(allTests)) {
+                allTests = []; // Dacă nu este un array valid, îl resetăm la un array gol
+            }
+
+            // Căutăm testul în allTests după testId pentru a-l actualiza
+            const existingTestIndex = allTests.findIndex(test => test.testId === geographyQuiz.testId);
+
+            if (existingTestIndex === -1) {
+                // Dacă testul nu există în allTests, îl adăugăm
+                allTests.push(geographyQuiz);
+            } else {
+                // Dacă testul există, îl actualizăm
+                allTests[existingTestIndex] = geographyQuiz;
+            }
+
+            // Salvăm lista actualizată de teste în localStorage
+            localStorage.setItem('allTests', JSON.stringify(allTests));
+        }
+
+        // Evenimentul pentru trimiterea răspunsului
+        submitButton.addEventListener('click', () => {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const currentQuestion = geographyQuiz.questions[currentQuestionIndex];
+
+            currentQuestion.userAnswer = userAnswer; // Salvăm răspunsul utilizatorului
+
+            // Verificăm dacă răspunsul este corect
+            if (userAnswer === currentQuestion.correctAnswer.toLowerCase()) {
+                currentQuestion.answeredCorrectly = true;
+                geographyQuiz.score++;
+                feedback.innerHTML = '<p style="color: green;">Correct!</p>';
+            } else {
+                currentQuestion.answeredCorrectly = false;
+                feedback.innerHTML = '<p style="color: red;">Wrong answer!</p>';
+            }
+
+            // Salvăm testul în localStorage
+            saveTest();
+
+            // Mergem la următoarea întrebare sau arătăm rezultatele dacă testul s-a terminat
+            currentQuestionIndex++;
+            if (currentQuestionIndex < geographyQuiz.questions.length) {
+                loadQuestion(); // Încărcăm următoarea întrebare
+            } else {
+                // Afișăm scorul final
+                feedback.innerHTML = `<p>Your score: ${geographyQuiz.score} out of ${geographyQuiz.questions.length}</p>`;
+
+                // Mesaj de feedback în funcție de scor
+                let resultMessage = '';
+                if (geographyQuiz.score === 5) {
+                    resultMessage = 'Excellent! You are a geography expert!';
+                } else if (geographyQuiz.score >= 3) {
+                    resultMessage = 'Great job! Keep it up!';
+                } else {
+                    resultMessage = 'Nice try! Try again for a better score!';
+                }
+                feedback.innerHTML += `<p>${resultMessage}</p>`;
+
+                // Afișăm butoanele pentru a reîncepe sau a vedea rezultatele
+                seeResultsButton.style.display = 'block';
+                tryAgainButton.style.display = 'block';
+            }
+        });
+
+        // Evenimentul pentru a încerca din nou
+        tryAgainButton.addEventListener('click', () => {
+            // Resetează datele pentru a încerca din nou testul
+            geographyQuiz.questions.forEach(question => {
+                question.userAnswer = '';
+                question.answeredCorrectly = false;
+            });
+            geographyQuiz.score = 0;
+            currentQuestionIndex = 0;
+
+            tryAgainButton.style.display = 'none';
+            seeResultsButton.style.display = 'none';
+
+            // Resetează datele în localStorage
+            localStorage.removeItem('allTests');
+
+            loadQuestion();  // Încarcă prima întrebare
+        });
+
+        // Funcția pentru a vizualiza rezultatele
+        seeResultsButton.addEventListener('click', () => {
+            let incorrectQuestionsHTML = '';
+
+            // Parcurgem testele din localStorage și afișăm întrebările greșite
+            allTests.forEach(test => {
+                test.questions.forEach((question, index) => {
+                    if (!question.answeredCorrectly) {
+                        incorrectQuestionsHTML += `
+                    <p><strong>Question:</strong> ${question.question}</p>
+                    <p><strong>Your Answer:</strong> ${question.userAnswer}</p>
+                    <p><strong>Correct Answer:</strong> ${question.correctAnswer}</p>
+                    <hr>
+                `;
+                    }
+                });
+            });
+
+            // Afișează întrebările cu răspunsuri greșite
+            feedback.innerHTML = incorrectQuestionsHTML;
+            seeResultsButton.style.display = 'none'; // Ascunde butonul de "Vezi rezultate"
+        });
+
+        // Încarcă prima întrebare la început
+        loadQuestion();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

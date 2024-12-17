@@ -1,0 +1,67 @@
+.signup,
+.login {
+      background-image: url(../../img/background-signup.jpg);
+      background-size: cover;
+      overflow: hidden;
+      height: 100vh;
+
+      .wrapper {
+            background-color: $base-color;
+            height: 100vh;
+            width: max(40%, 600px);
+            padding: 10px;
+            box-sizing: border-box;
+            background-repeat: 0 20px 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .title {
+                  font-size: 3rem;
+                  font-weight: 900;
+                  text-transform: uppercase;
+            }
+
+            .forms {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+
+                  form {
+                        width: min(400px, 100%);
+                        margin-top: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 10px;
+
+                        div {
+                              width: 100%;
+                              display: flex;
+                              justify-content: center;
+                        }
+
+                        label {
+                              flex-shrink: 0;
+                              height: 50px;
+                              width: 50px;
+                              background-color: $accent-color;
+                              color: $base-color;
+                              border-radius: 10px 0 0 10px;
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                              font-size: 1.5rem;
+                              font-weight: 500;
+
+                              svg {
+                                    fill: $base-color;
+                              }
+
+                        }
+                  }
+            }
+      }
+}

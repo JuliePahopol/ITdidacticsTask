@@ -1,4 +1,6 @@
+// Obiectul care conține datele testului (pentru fiecare test)
 const questionData = {
+    testId: "Test 1",  // Numele testului
     questions: [
         {
             question: 'I will ____ tennis this evening with my friend Jim.',
@@ -34,16 +36,10 @@ const questionData = {
     score: 0
 };
 
-// Очистка старых данных в localStorage перед загрузкой новых
-localStorage.removeItem('questionData');
+// Ține evidența indexului curent
+let currentQuestionIndex = 0;
 
-// Загрузка данных из localStorage, если они есть
-if (localStorage.getItem('questionData')) {
-    const savedData = JSON.parse(localStorage.getItem('questionData'));
-    questionData.questions = savedData.questions;
-    questionData.score = savedData.score;
-}
-
+// Obține elementele din HTML
 const questionText = document.getElementById('questionText');
 const submitButton = document.getElementById('submitAnswer');
 const answerInput = document.getElementById('answerInput');
@@ -52,45 +48,70 @@ const scoreDisplay = document.getElementById('score');
 const tryAgainButton = document.getElementById('tryAgain');
 const seeResultsButton = document.getElementById('seeResultsButton');
 
-// Отображение текущего вопроса
-let currentQuestionIndex = 0;
+// Încărcăm datele anterioare din localStorage, dacă există
+let allTests = JSON.parse(localStorage.getItem('allTests')) || [];
 
+// Funcție pentru încărcarea unui nou test (sau primul test)
 function loadQuestion() {
     const question = questionData.questions[currentQuestionIndex];
     questionText.innerHTML = question.question;
     answerInput.value = '';
     feedback.innerHTML = '';
-    scoreDisplay.innerHTML = `Your score: ${questionData.score}`;
 }
 
-// Проверка ответа
+
+
+// Funcție pentru a salva testul în localStorage
+function saveTest() {
+    // Verificăm dacă allTests este un array valid
+    if (!Array.isArray(allTests)) {
+        allTests = []; // Dacă nu este un array valid, îl resetăm la un array gol
+    }
+
+    // Căutăm dacă există deja un test cu același testId
+    const existingTestIndex = allTests.findIndex(test => test.testId === questionData.testId);
+
+    if (existingTestIndex !== -1) {
+        // Dacă testul există deja, îl actualizăm
+        allTests[existingTestIndex] = questionData;
+    } else {
+        // Dacă testul nu există, îl adăugăm ca un test nou
+        allTests.push(questionData);
+    }
+
+    // Salvăm lista de teste în localStorage
+    localStorage.setItem('allTests', JSON.stringify(allTests));
+}
+
+// Evenimentul care se activează la trimiterea răspunsului
 submitButton.addEventListener('click', () => {
     const userAnswer = answerInput.value.trim().toLowerCase();
     const currentQuestion = questionData.questions[currentQuestionIndex];
 
-    currentQuestion.userAnswer = userAnswer; // Сохраняем ответ пользователя
+    currentQuestion.userAnswer = userAnswer; 
 
+    // Verificăm dacă răspunsul este corect
     if (userAnswer === currentQuestion.correctAnswer.toLowerCase()) {
         currentQuestion.answeredCorrectly = true;
         questionData.score++;
         feedback.innerHTML = '<p style="color: green;">Well done!</p>';
     } else {
         currentQuestion.answeredCorrectly = false;
-        feedback.innerHTML = '';  // Ничего не выводится при неверном ответе
+        feedback.innerHTML = ''; 
     }
 
-    // Сохраняем данные в localStorage
-    localStorage.setItem('questionData', JSON.stringify(questionData));
+    // Salvăm testul în localStorage
+    saveTest();
 
-    // Переход к следующему вопросу
+    // Mergem la următorul întrebări sau afișăm rezultatele dacă am terminat toate întrebările
     currentQuestionIndex++;
     if (currentQuestionIndex < questionData.questions.length) {
-        loadQuestion();
+        loadQuestion(); // Încărcăm următoarea întrebare
     } else {
-        // Отображаем итоговый результат
+        // Afișăm scorul final
         feedback.innerHTML = `<p>Your score: ${questionData.score} out of ${questionData.questions.length}</p>`;
 
-        // Сообщение в зависимости от результата
+        // Mesaj de feedback în funcție de scorul obținut
         let resultMessage = '';
         if (questionData.score === 5) {
             resultMessage = 'Excellent!';
@@ -101,14 +122,15 @@ submitButton.addEventListener('click', () => {
         }
         feedback.innerHTML += `<p>${resultMessage}</p>`;
 
-        // Показываем кнопку "See results" и "Try again"
+        // Afișăm butoanele pentru a reîncepe sau a vedea rezultatele
         seeResultsButton.style.display = 'block';
         tryAgainButton.style.display = 'block';
     }
 });
 
+// Evenimentul pentru a încerca din nou
 tryAgainButton.addEventListener('click', () => {
-    // Сброс всех данных для повторного прохождения
+    // Resetează datele pentru a încerca din nou testul
     questionData.questions.forEach(question => {
         question.userAnswer = '';
         question.answeredCorrectly = false;
@@ -119,30 +141,34 @@ tryAgainButton.addEventListener('click', () => {
     tryAgainButton.style.display = 'none';
     seeResultsButton.style.display = 'none';
 
-    localStorage.removeItem('questionData');
+    // Resetează datele în localStorage
+    localStorage.removeItem('allTests');
 
-    loadQuestion();  // Перезагружаем первый вопрос
+    loadQuestion();  // Încarcă prima întrebare
 });
 
-// Показ результатов (неправильные ответы)
+// Funcția pentru a vizualiza rezultatele
 seeResultsButton.addEventListener('click', () => {
     let incorrectQuestionsHTML = '';
 
-    questionData.questions.forEach(question => {
-        if (!question.answeredCorrectly) {
-            incorrectQuestionsHTML += `
-                <p><strong>Question:</strong> ${question.question}</p>
-                <p><strong>Your Answer:</strong> ${question.userAnswer}</p>
-                <p><strong>Correct Answer:</strong> ${question.correctAnswer}</p>
-                <hr>
-            `;
-        }
+    // Parcurgem testele din localStorage și afișăm întrebările greșite
+    allTests.forEach(test => {
+        test.questions.forEach((question, index) => {
+            if (!question.answeredCorrectly) {
+                incorrectQuestionsHTML += `
+                    <p><strong>Question:</strong> ${question.question}</p>
+                    <p><strong>Your Answer:</strong> ${question.userAnswer}</p>
+                    <p><strong>Correct Answer:</strong> ${question.correctAnswer}</p>
+                    <hr>
+                `;
+            }
+        });
     });
 
-    // Выводим вопросы с неверными ответами
+    // Afișează întrebările cu răspunsuri greșite
     feedback.innerHTML = incorrectQuestionsHTML;
-    seeResultsButton.style.display = 'none';  // Скрываем кнопку "See results"
+    seeResultsButton.style.display = 'none'; // Ascunde butonul de "Vezi rezultate"
 });
 
-// Загрузка первого вопроса
+// Încarcă prima întrebare la început
 loadQuestion();

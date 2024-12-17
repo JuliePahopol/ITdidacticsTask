@@ -2,11 +2,6 @@
     margin-top: 5%;
     display: flex;
 
-    .chapter {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
 
     .words,
     .definition {
@@ -33,7 +28,6 @@
     .task {
         display: flex;
         justify-content: center;
-        align-items: end;
         gap: 20px;
 
         input,

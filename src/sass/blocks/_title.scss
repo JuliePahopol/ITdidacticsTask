@@ -1,9 +1,18 @@
+.chapter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 .title {
     color: #000;
     font-family: "Roboto Serif";
     font-size: 50px;
     font-weight: 400;
     line-height: normal;
+    text-align: center;
 }
 
 .subtitle {
@@ -21,7 +30,7 @@ ul {
 }
 
 #questionText {
-    font-size: 25px;
+    font-size: 18px;
     margin-top: 40px;
     /* Измените на нужный размер */
 }

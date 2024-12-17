@@ -1,0 +1,21 @@
+input {
+    font-size: 20px;
+    flex-grow: 1;
+    min-width: 0;
+    height: 50px;
+    padding: 1em;
+    font: inherit;
+    border-radius: 0 10px 10px 0;
+    border: 2px solid $input-color;
+    background-color: $input-color;
+    border-left: none;
+    transition: 150ms ease;
+
+    &:hover {
+        border-color: $accent-color;
+    }
+
+    &:focus{
+        outline: none;
+    }
+}
